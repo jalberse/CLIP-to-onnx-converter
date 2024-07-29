@@ -4,6 +4,9 @@ import torch
 def main():
     import argparse
 
+    # Largely derived from: https://github.com/openai/CLIP/issues/122
+    
+
     parser = argparse.ArgumentParser(description='Convert a model to ONNX format')
     # ['RN50', 'RN101', 'RN50x4', 'RN50x16', 'RN50x64', 'ViT-B/32', 'ViT-B/16', 'ViT-L/14', 'ViT-L/14@336px']
     parser.add_argument('model', type=str, help='Name of the CLIP model')
