@@ -2,7 +2,7 @@ NOTE: THIS IS NOT READY FOR USE YET (but you may still find it helpful, I'm just
 
 # CLIP to ONNX Converter
 
-Exports CLIP for usage with OSSX.
+Exports CLIP for usage with ONNX.
 
 Note that CLIP has multiple constituent models: namely, the visual net and the text transformer, for CLIP.encode_image() and CLIP.encode_text() respectively. The forward() model function simply calls them both and does some simple comparison operations.
 
