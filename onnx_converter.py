@@ -8,6 +8,8 @@ def main():
     # But, we need to export the image and text encoders separately, as the CLIP 
 
     parser = argparse.ArgumentParser(description='Convert the CLIP model to ONNX format.')
+
+    # TODO - Note I've only tested with ViT-L/14@336px, but I think the others should work too.
     # ['RN50', 'RN101', 'RN50x4', 'RN50x16', 'RN50x64', 'ViT-B/32', 'ViT-B/16', 'ViT-L/14', 'ViT-L/14@336px']
     parser.add_argument('model', type=str, help='Name of the CLIP model')
     parser.add_argument('output', type=str, help='Path to the output ONNX file')
@@ -20,14 +22,6 @@ def main():
     m.forward(dummy_image,dummy_texts) # Original CLIP result (1)
 
     # TODO - VIZLIB-37
-
-    # TODO Okay, I have typed in the stuff I need to get exported. Test it, try loading
-    #      it into Rust with tch (?). Use all 3 models for now, implement the encode_text thing
-    #      with the additional Parameter and LayerNorm stuff and permuations.
-    #      ndarray provides a common interface for our "x" between ONNX and tch.
-    #        (that stuff is done in the forward() ONNX, but wouldn't be for a plain export
-    #         of the transformer model, so we'll need to do that - can't just call the transformer ONNX for text).
-    #         Remember the token embedding stuff is *I think* handled by the instant-clip-tokenizer crate.
 
     torch.onnx.export(m, (dummy_image, dummy_texts), args.output, export_params=True,
       input_names=["IMAGE", "TEXT"],
