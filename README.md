@@ -8,7 +8,7 @@ Note that CLIP has multiple constituent models: namely, the visual net and the t
 
 We would like to be able to use all 3 model functions, since they all have specific use cases.
 But you can't just store them in one ONNX, since it will just construct the graph for the Module's forward() function.
-But I had a use case where I wanted to use ONNX for CLIP (for example, to simplify distributing and running these models on client machines, or to call them from another language like Rust, rather than on a server using something like CLIP-as-a-service).
+But I had a use case where I wanted to use ONNX for CLIP (for example, to simplify distributing and running these models on client machines or to call them from another language like Rust, rather than on a server using something like CLIP-as-a-service in python).
 So, we'd like to export everything necessary to accomplsih these 3 model functions as distinct ONNX graphs + tensor data.
 This project provides that export.
 
