@@ -5,7 +5,7 @@ def main():
     import argparse
 
     # Largely derived from: https://github.com/openai/CLIP/issues/122
-    # But, we need to export the image and text encoders separately, as the CLIP 
+    # But, we need to export the image and text encoders separately to be able to implement the CLIP.encode_text() and CLIP.encode_image() functions in Rust.
 
     parser = argparse.ArgumentParser(description='Convert the CLIP model to ONNX format.')
 
