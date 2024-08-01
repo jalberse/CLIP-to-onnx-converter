@@ -1,5 +1,3 @@
-NOTE: THIS IS NOT READY FOR USE YET (but you may still find it helpful, I'm just providing no warranty on it). TODO: Remove this once we've tested this more in (secret project).
-
 # CLIP to ONNX Converter
 
 Exports CLIP for usage with ONNX.
@@ -17,3 +15,13 @@ Note that the forward() model function doesn't truly need its own .ONNX file - y
 To replicate CLIP.encode_image(), we can simply export the CLIP.visual VisionTransformer(nn.Module) and its forward() function will be saved to ONNX properly.
 To replicate CLIP.encode_text(), things are a bit more complex. The function does not just pass to a forward() call on the Transformer, but makes some additional modifications. These would need to be re-implemented in the target language; the various tensors involved are also saved out by this script.
 
+## Note on RAM
+
+This requires a lot of RAM - set up some swap space. A total of ~42GB is sufficient. If you get a "Killed" message, this is the likely culprit.
+
+## Warning in output about aten::index
+
+ONNX does not have the full opset of PyTorch, so it uses multiple ONNX operators.
+In this case, it would break if negative indices are used.
+But our verification shows that typical inputs give equivalent results (i.e. we're not using negative indices), so this should be OK.
+In the future, perhaps another opset release will obviate this warning.
