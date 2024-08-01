@@ -20,7 +20,7 @@ This project provides that export.
 To replicate CLIP.encode_image(), we can simply export the CLIP.visual VisionTransformer(nn.Module) and its forward() function will be saved to ONNX properly.
 To replicate CLIP.encode_text(), things are a bit more complex. The function does not just pass to a forward() call on the Transformer, but makes some additional modifications. These would need to be re-implemented in the target language around calls to the ONNX graph; the various tensors involved are also saved out by this script to be loaded and used in these operations
 
-Note that the forward() model function doesn't truly need its own .ONNX file - you can simply use the other two models, and re-implement the CLIP.forward() function accordingly wherever these models are being used. This saves ~1GB disk space, which is the size of the combined model (for the largest ViT model).
+Note that the forward() model function doesn't truly need its own .ONNX file - you can simply use the other two models, and re-implement the CLIP.forward() function accordingly wherever these models are being used. This saves ~1.6 GB disk space, which is the size of the combined model (for the largest ViT model).
 
 Reference the [CLIP repository](https://github.com/openai/CLIP) to view the encode_image(), encode_text(), and forward() definitions for CLIP.
 
