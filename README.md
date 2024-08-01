@@ -9,11 +9,13 @@ But you can't just store them in one ONNX, since it will just construct the grap
 But, using the ONNX format for CLIP can be useful to (for example):
 
 * take advantage of ONNX performance
-* to simplify distributing and running these models on client machines with different architectures (abstracted under the ONNX runtime)
+* to simplify distributing and running these models on client machines with different architectures (abstracted under the ONNX runtime).
 * and to call the model from another language, such as in Rust with ORT.
 
 So, we'd like to export everything necessary to accomplish these 3 model functions as distinct ONNX graphs + tensor data.
 This project provides that export.
+
+(If you only want to run CLIP on a server and you're fine with Python, consider using [clip-as-a-service](https://clip-as-service.jina.ai/index.html) instead. It is the simpler solution)
 
 To replicate CLIP.encode_image(), we can simply export the CLIP.visual VisionTransformer(nn.Module) and its forward() function will be saved to ONNX properly.
 To replicate CLIP.encode_text(), things are a bit more complex. The function does not just pass to a forward() call on the Transformer, but makes some additional modifications. These would need to be re-implemented in the target language around calls to the ONNX graph; the various tensors involved are also saved out by this script to be loaded and used in these operations
