@@ -32,7 +32,7 @@ This requires a lot of RAM - set up some swap space. A total of ~42GB is suffici
 
 ## Warning in output about aten::index
 
-ONNX does not have the full opset of PyTorch, so it uses multiple ONNX operators.
+ONNX does not have the full opset of PyTorch, so it uses multiple ONNX operators to recreate the op.
 In this case, it would break if negative indices are used.
 But our verification shows that typical inputs give equivalent results (i.e. we're not using negative indices), so this should be OK.
 In the future, perhaps another opset release will obviate this warning.
