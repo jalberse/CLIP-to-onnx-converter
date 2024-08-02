@@ -118,6 +118,13 @@ def main():
     torch.save(m.text_projection, args.output.replace(".onnx", "_text_projection.pt"))
     torch.save(m.logit_scale, args.output.replace(".onnx", "_logit_scale.pt"))
 
+    # Print the dimensions of each of those tensors
+    print("Shapes:")
+    print("ln_final: ", m.ln_final.weight.shape)
+    print("positional_embedding: ", m.positional_embedding.shape)
+    print("text_projection: ", m.text_projection.shape)
+    print("logit_scale: ", m.logit_scale.shape)
+
     print("Running the exported forward() model with ONNXRuntime to verify the results...")
 
     ort_sess = ort.InferenceSession(args.output)
@@ -134,6 +141,13 @@ def main():
     #   than having it silently pass the first time I ran it.
     # print("Torch out: ", to_numpy(torch_result[0]))
     # print("ORT out: ", ort_result[0])
+
+    # Print the output dimensions for the combined forward() model
+    print("Torch out[0] shape: ", to_numpy(torch_result[0]).shape)
+    print("Torch out[1] shape: ", to_numpy(torch_result[1]).shape)
+    print("ORT out[0] shape: ", ort_result[0].shape)
+    print("ORT out[1] shape: ", ort_result[1].shape)
+
     print("Exported CLIP model (combined forward()) has been tested with ONNXRuntime, and the result looks good!")
 
     # Similarly test the Visual and Text transformer models using ORT
@@ -149,6 +163,10 @@ def main():
     # print("Torch out: ", to_numpy(torch_result_visual[0]))
     # print("ORT out: ", ort_result_visual[0])
 
+    # Print the output dimensions for the visual model
+    print("Torch out shape: ", to_numpy(torch_result_visual).shape)
+    print("ORT out shape: ", ort_result_visual[0].shape)
+
     print("Exported Visual model has been tested with ONNXRuntime, and the result looks good!")
 
     # Get the torch results for the Text transformer model.
@@ -161,6 +179,10 @@ def main():
     ort_sess_transformer = ort.InferenceSession(args.output.replace(".onnx", "_transformer.onnx"))
     ort_result_transformer=ort_sess_transformer.run(["FEATURES_EMBEDDED"], {"TEXT": x.detach().numpy()})
     np.testing.assert_allclose(to_numpy(torch_result_transformer), ort_result_transformer[0], rtol=1e-03, atol=1e-05)
+
+    # Print the output dimensions for the Text transformer model
+    print("Torch out shape: ", to_numpy(torch_result_transformer).shape)
+    print("ORT out shape: ", ort_result_transformer[0].shape)
 
     # print("Torch out: ", to_numpy(torch_result_transformer))
     # print("ORT out: ", ort_result_transformer[0])
