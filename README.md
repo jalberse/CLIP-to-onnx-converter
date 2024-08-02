@@ -15,12 +15,11 @@ But, using the ONNX format for CLIP can be useful to (for example):
 So, we'd like to export everything necessary to accomplish these 3 model functions as distinct ONNX graphs + tensor data.
 This project provides that export.
 
+Three ONNX files are output. The base ONNX (forward()), *_transformer.onnx (encode_text()), and *_visual.onnx (encode_image()).
+
 (If you only want to run CLIP on a server and you're fine with Python, consider using [clip-as-a-service](https://clip-as-service.jina.ai/index.html) instead. It is the simpler solution)
 
-To replicate CLIP.encode_image(), we can simply export the CLIP.visual VisionTransformer(nn.Module) and its forward() function will be saved to ONNX properly.
-To replicate CLIP.encode_text(), things are a bit more complex. The function does not just pass to a forward() call on the Transformer, but makes some additional modifications. These would need to be re-implemented in the target language around calls to the ONNX graph; the various tensors involved are also saved out by this script to be loaded and used in these operations
-
-Note that the forward() model function doesn't truly need its own .ONNX file - you can simply use the other two models, and re-implement the CLIP.forward() function accordingly wherever these models are being used. This saves ~1.6 GB disk space, which is the size of the combined model (for the largest ViT model).
+Note that the forward() model function doesn't truly need its own .ONNX file - you can simply use the other two models, and re-implement the CLIP.forward() function accordingly wherever these models are being used, since it's just a simple combination of both of those with some additional operations. This saves ~1.6 GB disk space, which is the size of the combined model (for the largest ViT model). But, you need to re-implement it. If that involved bringing in e.g. tch-rs if you're calling these models from Rust, than that dependency is larger than just duplicating the graphs (if you're an optimization-head, you can write a bespoke solution - repugnant-pickle is a possible solution).
 
 Reference the [CLIP repository](https://github.com/openai/CLIP) to view the encode_image(), encode_text(), and forward() definitions for CLIP.
 
