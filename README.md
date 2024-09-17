@@ -19,7 +19,7 @@ Three ONNX files are output. The base ONNX (forward()), *_transformer.onnx (enco
 
 (If you only want to run CLIP on a server and you're fine with Python, consider using [clip-as-a-service](https://clip-as-service.jina.ai/index.html) instead. It is the simpler solution)
 
-Note that the forward() model function doesn't truly need its own .ONNX file - you can simply use the other two models, and re-implement the CLIP.forward() function accordingly wherever these models are being used, since it's just a simple combination of both of those with some additional tensor operations. This saves ~1.6 GB disk space, which is the size of the combined model (for the largest ViT model). But, you need to re-implement it. Decide what's best for your project. Know that holding these models in VRAM can be expensive.
+Note that the forward() model function doesn't truly need its own .ONNX file - you can simply use the other two models, and re-implement the CLIP.forward() function accordingly wherever these models are being used, since it's just a simple combination of both of those with some additional tensor operations. This saves disk + VRAM.
 
 Reference the [CLIP repository](https://github.com/openai/CLIP) to view the encode_image(), encode_text(), and forward() definitions for CLIP.
 
